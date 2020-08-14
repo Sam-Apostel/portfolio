@@ -1,0 +1,13 @@
+html, body{
+    background-color: #353535;
+    color: white;
+    font-family: "Helvetica Neue", Roboto, sans-serif;
+    font-size: .5em;
+}
+canvas{
+    position:relative;
+    background-color: #3D3D3D;
+    margin: 40px auto;
+    display: block;
+    border: 1px solid #545454;
+}

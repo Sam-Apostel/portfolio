@@ -1,0 +1,69 @@
+@import url('https://fonts.googleapis.com/css?family=IBM+Plex+Sans:100,100i,400,400i,700,700i&display=swap');
+:root {
+    --T-completion: 10;
+}
+html, body{
+    padding:0;
+    margin:0;
+}
+html{
+    padding: 20px;
+    background-color: rgba(255,255,255,0);
+    font-family: 'IBM Plex Sans', sans-serif;
+}
+.task{
+    display: inline-block;
+    border-radius: 10px;
+    margin-left: 10px;
+    position: relative;
+    background-color: #3E494B;
+    color: whitesmoke;
+    overflow: hidden;
+    width: 210px;
+    -webkit-user-select: none;
+}
+.task::after{
+    position: absolute;
+    content: "";
+    background-color: #f9af00;
+    height:100%;
+    width: calc(var(--T-completion) * 1px);
+    top:0;
+    left:0;
+    transition: .5s;
+}
+.group{
+    display: inline-block;
+    width: 170px;
+    height:100%;
+    padding:20px;
+}
+.group *{
+    z-index: 1;
+    position: relative;
+}
+.group h5 {
+    font-size: 1.2em;
+    margin: 15px 0 5px 0;
+}
+.group p{
+    font-size: .7em;
+    margin: 5px 0;
+}
+
+.add{
+    text-align: center;
+    background-color: #6E6E6E;
+    width: 20px;
+    height: 63px;
+}
+.add::after{
+    display:none;
+}
+
+input[type="checkbox"],
+input[type="checkbox"]:checked + .group,
+input[type="checkbox"]:not(:checked) + label + input[type="checkbox"]:not(:checked) + .group,
+input[type="checkbox"]:not(:checked) + label + .group {
+    display: none;
+}

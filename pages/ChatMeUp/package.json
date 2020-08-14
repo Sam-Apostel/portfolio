@@ -1,0 +1,15 @@
+{
+  "name": "chat-me-up",
+  "version": "0.1.0",
+  "description": "A simple chat app.",
+  "main": "index.js",
+  "author": "Sam Apostel",
+  "private": true,
+  "dependencies": {
+    "express": "^4.16.4",
+    "socket.io": "^2.2.0"
+  },
+  "scripts": {
+    "start": "node index.js"
+  }
+}

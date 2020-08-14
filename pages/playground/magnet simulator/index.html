@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body{
+	margin:0;
+}
+canvas {
+	border:1px solid #d3d3d3;
+    background-color: rgba(50,50,50,1);
+    margin:10px;
+}
+</style>
+</head>
+<body onload="Start();createMagnet();">
+<form>
+<input type="range" id="SLforce" name="SLforce" min="1" max="1000" value="5" oninput="this.form.TXTforce.value=this.value" />
+<input type="number" name="TXTforce" min="1" max="1000" value="5" oninput="this.form.SLforce.value=this.value" />
+<br>
+	width:
+	<input type="range" id="SLwidth" name="SLwidth" min="10" max="1000" value="1000" oninput="this.form.TXTwidth.value=this.value" />
+	<input type="number" name="TXTwidth" min="10" max="1000" value="1000" oninput="this.form.SLwidth.value=this.value" />
+	<br>
+	height:
+	<input type="range" id="SLheight" name="SLheight" min="10" max="1000" value="500" oninput="this.form.TXTheight.value=this.value" />
+	<input type="number" name="TXTheight" min="10" max="1000" value="500" oninput="this.form.SLheight.value=this.value" />
+	<br>
+	cell size:
+	<input type="range" id="SLcellSize" name="SLcellSize" min="4" max="100" value="5" oninput="this.form.TXTcellSize.value=this.value" />
+	<input type="number" name="TXTcellSize" min="4" max="100" value="5" oninput="this.form.SLcellSize.value=this.value" />
+</form>
+<button onclick="Start()">Generate</button>
+<button onclick="createMagnet('pos')">add positive magnet</button>
+<button onclick="createMagnet('neg')">add negative magnet</button>
+
+<script>
+var cellSize, width, height, ctx;
+function Start() {
+	width = document.getElementById('SLwidth').value;
+	height = document.getElementById('SLheight').value;
+	cellSize = document.getElementById('SLcellSize').value;
+    MField.start();
+}
+
+var MField = {
+    canvas : document.createElement("canvas"),
+    start : function() {
+    	this.canvas.width = width;
+        this.canvas.height = height;
+        ctx = this.canvas.getContext("2d");
+        document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+        createVectors();
+        this.interval = setInterval(updateMField, 20);
+    },
+    clear : function(){
+    	ctx.clearRect(0, 0, width, height);
+    }
+}
+function updateMField(){
+	MField.clear();
+	for(var j = 0; j < vectors.length;j++){
+		vectors[j].force = 0;
+		var angles = [[],[],[]];
+		for(var i = 0; i < magnets.length;i++){
+			magnets[i].update();
+			angles[0][i] = getAngle(magnets[i].x,magnets[i].y,vectors[j].centerx,vectors[j].centery);
+			angles[1][i] = calcForce(magnets[i],vectors[j]);
+		}
+		var force = 0;
+		var angle = 0;
+		for(var i = 0; i <angles[0].length;i++){
+			var beta = Math.PI - (angles[0][i] - angle);
+			var a = angles[1][i];
+			var b = force;
+			force = Math.sqrt(a*a + b*b - 2*a*b*Math.cos(beta));
+			angle = Math.asin(b*Math.sin(beta)/force)-angle;
+		}
+		vectors[j].rotateTo((angle));
+		vectors[j].force = force;
+		vectors[j].update();
+	}
+}
+var magnets=[];
+var magnetxy = 1
+function createMagnet(pol){
+	if(pol == "neg"){
+		magnets.push(new MAGNET(width - (magnetxy * cellSize),height - (magnetxy * cellSize),5, pol));
+	}else{
+		magnets.push(new MAGNET(magnetxy * cellSize,magnetxy * cellSize,5, pol));
+	}
+	
+	magnetxy++;
+	
+}
+function MAGNET(x,y,force, polarity){
+	this.x = x;
+	this.y = y;
+	this.force = force;
+	this.color = 'red';
+	if (polarity == "neg"){
+		this.force = -this.force;
+		this.color = 'blue';
+	}
+	
+	
+	this.move = function(x,y){
+		this.x = x;
+		this.y = y;
+		this.update();
+	}
+	this.update = function(){
+		ctx.beginPath();
+		ctx.arc(this.x, this.y, mapForceToRadius(this.force), 0, 2 * Math.PI, false);
+		ctx.fillStyle = this.color;
+		ctx.fill();
+		ctx.lineWidth = 2;
+		ctx.strokeStyle = '#003300';
+		ctx.stroke();
+		ctx.closePath();
+	}
+}
+var vectors = [];
+function createVectors(){
+	vectors = [];
+ 	for(var y = 0; y <= height / cellSize; y++){
+ 		for(var x = 0; x <= width/cellSize; x++){
+ 	 		vectors.push(new STROKE(x,y,cellSize));
+ 		}
+ 	}
+}
+function STROKE(x,y,cellSize){
+	this.angle = 0;
+	this.x = x;
+	this.y = y
+	this.force = 0;
+	this.color = mapRainbow(map_range(this.force, 0, 800, 360,0));
+	calcPoints(this);
+	drawStroke(this);
+
+	this.rotateTo = function(deg){
+		this.angle = deg;
+	}
+	
+	this.update = function(){
+		calcPoints(this);
+		drawStroke(this);
+		}
+}
+function calcPoints(stroke){
+	stroke.centerx = stroke.x * cellSize - cellSize/2;
+	stroke.centery = stroke.y * cellSize - cellSize/2;
+	stroke.x1 = stroke.centerx - (Math.sin(stroke.angle) * cellSize/2);
+	stroke.x2 = stroke.centerx + (Math.sin(stroke.angle) * cellSize/2);
+	stroke.y1 = stroke.centery - (Math.cos(stroke.angle) * cellSize/2);
+	stroke.y2 = stroke.centery + (Math.cos(stroke.angle) * cellSize/2);
+}
+function drawStroke(stroke){
+	ctx.beginPath();
+	ctx.moveTo(stroke.x1,stroke.y1);
+	ctx.lineTo(stroke.x2,stroke.y2);
+	stroke.color = mapRainbow(stroke.force);
+	ctx.strokeStyle = stroke.color;
+	ctx.stroke();
+	ctx.closePath();
+}
+function mapRainbow(value) {
+    return 'hsl(' + value + ',100%,50%)';
+}
+function map_range(value, low1, high1, low2, high2) {
+    return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
+}
+function mapForceToRadius(force){
+	return map_range(force,10,1000,20,40);
+}
+function getAngle(x1, y1, x2, y2) {
+    return Math.atan2(x2 - x1, y2 - y1) + 2 * Math.PI;
+}
+
+function calcForce(magnet, vector){
+	return 1/Math.pow(distance(magnet.x,magnet.y,vector.centerx,vector.centery), 3) * magnet.force * 1000000;
+}
+
+function distance(cx, cy, ex, ey){
+	var dy = (ey - cy);
+	var dx = (ex - cx);
+	return Math.sqrt((dx * dx) + (dy * dy));
+} 
+/* function distance(x1, y1, x2, y2) {
+    return Math.sqrt((x2 -= x1) * x2 + (y2 -= y1) * y2);
+} */
+</script>
+</body>
+</html>

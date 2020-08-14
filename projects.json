@@ -1,0 +1,82 @@
+{
+  "beegeeky": {
+    "img":"beegeeky",
+    "title":"BeeGeeky",
+    "subtitle":"Get all of the latest gadgets.",
+    "link": "http://beegeeky.tigrr.be",
+    "assignment":"BeeGeeky was mijn eindwerk voor informaticabeheer. Een webshop zonder libraries.",
+    "technologies": ["html", "js", "css", "php", "sql"]
+  },
+  "chat_me_up": {
+    "img":"CMU",
+    "title":"Chat Me Up",
+    "subtitle":"Lightweight socket.io chat application",
+    "assignment":"A project I took on to get proficient in websockets.",
+    "technologies": ["html", "js", "css", "Socket.io", "sql", "PWA"]
+  },
+  "AVDB": {
+    "img": "AVDB",
+    "title":"A Van Den Bosch Dakwerken",
+    "subtitle": "Complete website redesign",
+    "assignment": "",
+    "link": "http://www.avandenbosch.be",
+    "technologies": ["html", "js", "css", "Google Analytics"]
+  },
+  "Playground": {
+    "img":"playground",
+    "title":"Playground",
+    "subtitle":"Javascript games and engines.",
+    "assignment":"I made these games as a means of mastering Javascript.",
+    "technologies": ["html", "js"]
+  },
+  "hera": {
+    "img":"hera",
+    "title":"Hera",
+    "subtitle":"Praesisium voorstelling",
+    "assignment":"Hera asked me to implement their custom design into their existing Weebly website.",
+    "link": "https://heraua.weebly.com/praesidium.html",
+    "frame": 0,
+    "technologies": ["html", "css", "Weebly"]
+  },
+  "wing_it": {
+    "img":"wingit",
+    "title":"Wing It",
+    "subtitle":"The Uantwerpen confessions hookup app",
+    "assignment":"An app ordered for the students of the university of antwerp.",
+    "technologies": ["html", "js", "css", "Socket.io", "sql", "aws", "Google Cloud", "PWA"]
+  },
+  "SuperQuest": {
+    "img": "superquest",
+    "title": "SuperQuest",
+    "subtitle": "Reach the unreachable audience.",
+    "assignment": "Top ranked App in a 24 hour Realdolmen hackathon.",
+    "technologies": ["html", "js", "css", "Socket.io", "sql", "PWA"]
+  },
+  "ZenBaby": {
+    "img":"zenbaby",
+    "title":"ZenBaby / ZenBeauty",
+    "subtitle":"De wellness waar ook de allerkleinsten welkom zijn.",
+    "link": "https://www.zenbaby.be",
+    "assignment":"Recent kreeg ik het beheer van deze site in mijn schoot geworpen waarna ik SEO, semantics en snelheid optimaliseerde.",
+    "technologies": ["html", "js", "css", "php", "scss"],
+    "frame": 1
+  },
+  "Charles": {
+    "img": "charles",
+    "title": "Charles Vleeswaren",
+    "link": "/charles",
+    "technologies": ["react", "redux-toolkit", "typescript", "php", "npm"]
+  },
+  "confessions": {
+    "img": "confessions",
+    "title": "UAntwerpen Confessions",
+    "link": "ua.confessions.link",
+    "technologies": ["webcomponents", "redux", "nodeJS", "facebook Graph"]
+  },
+  "vayaMassage": {
+    "img": "vaya",
+    "title": "Vaya Massage",
+    "link": "app.vayamassage.be",
+    "technologies": ["React native", "Cloud functions", "mySql"];
+  }
+}

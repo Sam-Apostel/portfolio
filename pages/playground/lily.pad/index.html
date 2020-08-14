@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>
+body{
+	margin:0;
+}
+canvas {
+    border:none;
+    width: 100vw;
+    height:100vh;
+    background-size: calc(100vw * 2.50783699) 100vh;
+    background: rgba(50, 50, 50, 1) url('img/back3.png') repeat-y;
+    /* animation: backgroundScroll 20s linear infinite;   */
+	image-rendering: pixelated;
+}
+@keyframes backgroundScroll {
+from {background-position: 0 0;}
+to {background-position: calc( -100vw * 1.50783699) 0;}
+}
+
+</style>
+    <title>Lily Pad</title>
+</head>
+<body onload="startGame();">
+<script>
+var fps = 60;
+var gameWidth = window.innerWidth;
+var gameHeight = window.innerHeight;
+
+
+var player;
+
+
+
+function startGame() {
+    player = new Component(172, 188, "yellow", 500,500,"player");
+    myGameArea.start();
+}
+var myGameArea = {
+	width : gameWidth,
+	height : gameHeight,
+    canvas : document.createElement("canvas"),
+    start : function() {
+    	this.canvas.width = this.width;
+        this.canvas.height = this.height;
+        this.context = this.canvas.getContext("2d");
+        this.context.imageSmoothingEnabled = false;
+        document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+        this.frameNo = 0;
+        this.interval = setInterval(updateGameArea, 1000/fps);
+        window.addEventListener('keydown', function (e) {
+            e.preventDefault();
+            myGameArea.keys = (myGameArea.keys || []);
+            myGameArea.keys[e.keyCode] = (e.type === "keydown");
+        })
+        window.addEventListener('keyup', function (e) {
+            myGameArea.keys[e.keyCode] = (e.type === "keydown");
+        })
+        if (window.DeviceOrientationEvent) {
+            //window.addEventListener('touchstart', alert('clicked'));//clickedCanvas());
+	  		// Listen for the event and handle DeviceOrientationEvent object
+	 		window.addEventListener('deviceorientation', function(eventData) {
+		    	var tiltLR = eventData.gamma;//leftright
+		   		var tiltFB = eventData.beta;//frontback
+		    	var dir = eventData.alpha;//direction
+		    	deviceOrientationHandler(tiltLR, tiltFB, dir);
+		  	}, false);
+}
+    },
+    stop : function() {
+        clearInterval(this.interval);
+    },
+    clear : function() {
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+}
+var textures = [];
+loadSprite("player",5,4,43,47);
+loadSprite("coin",5,3,10,10);
+function loadSprite(textureName,col,row,xscl,yscl){
+	textures[textureName] = [];
+	var i=0;
+	for(var y = 0; y < row;y++){
+		for(var x = 0; x < col;x++){
+			textures[textureName][i++] = [x * xscl,y*yscl,xscl,yscl]
+		}
+	}
+}
+
+
+function textureloader(texture, i, dx, dy, dw, dh,reversed){
+	switch(texture) {
+    case "player":
+        var text = new Image();
+    	text.src = "img/lily.png";
+    	if(reversed){
+    		ctx.scale(-1,1);
+        }
+    	var current = textures[texture][i];
+    	ctx.drawImage(text, current[0], current[1], current[2], current[3], dx, dy, dw, dh);
+        break;
+    case "coin":
+        var text = new Image();
+    	text.src = "img/COIN.png";
+    	var current = textures[texture][i];
+    	ctx.drawImage(text, current[0], current[1], current[2], current[3], dx, dy, dw, dh);
+        break;
+    case "wall":
+    	 ctx.fillStyle = 'rgba(0, 0, 0, 0)';;
+         ctx.fillRect(dx, dy, dw, dh);
+        break;
+    default:
+
+	}
+
+
+}
+function Component(width, height, color, x, y, type) {
+	this.landing = false;
+    this.type = type;
+    this.width = width;
+    this.height = height;
+    this.speed =[];
+    this.speed["x"] = 0;
+    this.speed["y"] = 0;
+    this.speed["z"] = 0;
+    this.image = new Image();
+    this.direction = true;
+    switch(type) {
+    case "player":
+        this.Cwidth = 54;
+    	this.gravity = 0.4;
+    	this.action = 1;
+    	this.walkLoop =[1,11,6,6,6,16];
+    	this.walkScl = map_range(Math.abs(this.speed["x"]),0,10,10,0);
+    	this.walkI = 0;
+    	this.landLoop =[19,14,9,4,4,4,4,4,4,4,4,4,9,14,19,18,13,8,3];
+    	this.landScl = 2;
+    	this.landI = 0;
+    	this.riseLoop =[2,3,8,13,18];
+    	this.riseScl = 1;
+    	this.riseI = 0;
+        break;
+    case "coin":
+    	this.gravity = 0.4;
+    	this.action = 0;
+    	this.rotateLoop =[0,1,2,3,4,1];
+    	this.rotateScl = 3
+    	this.rotI = 0;
+        break;
+    case "wall":
+    	this.gravity = 0;
+    	this.action = 0;
+        break;
+    default:
+    	this.gravity = 0.3;
+	}
+    this.gravitySpeed = 0;
+    this.x = x;
+    this.y = y;
+    this.display = true;
+
+    this.update = function() {
+        ctx = myGameArea.context;
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        textureloader(this.type,this.action,this.width / -2, this.height / -2, this.width, this.height,this.direction);
+        ctx.restore();
+    }
+    this.newPosCoin = function(){
+    	this.gravitySpeed += this.gravity;
+    	this.x += this.speed["x"];
+    	this.y += this.gravitySpeed;
+    	if(this.gravitySpeed){
+    		for(var i = 0; i < myWalls.length;i++){
+    			if(collide(this, myWalls[i]) && this.gravitySpeed > 0){
+        			//on ground
+					this.gravitySpeed = 0;
+					this.y = myWalls[i].y - (myWalls[i].height / 2) - this.height/2;
+    			}
+    		}
+    	}
+    	this.action = this.rotateLoop[Math.floor(this.rotI)];
+    	this.rotI += 1/this.rotateScl;
+    	if(Math.floor(this.rotI) >= this.rotateLoop.length)this.rotI = 0;
+    }
+    this.newPosPlayer = function() {
+    	this.gravitySpeed += this.gravity;
+
+    	if(this.gravitySpeed > 70){
+			this.x = 500;
+			this.y = 500;
+			player.speed["x"] = 0;
+	    	player.speed["y"] = 0;
+			this.gravitySpeed = -10;
+			this.walkI = 0;
+        }else{
+        	this.x += this.speed["x"];
+        	if(this.speed["x"] === 0){
+        		this.action = 2;
+        		this.walkI = 0;
+            }else{
+            	this.action = this.walkLoop[Math.floor(this.walkI)];
+            	this.walkI += 1/this.walkScl;
+            	if(Math.floor(this.walkI) >= this.walkLoop.length)this.walkI = 0;
+            }
+
+        	if(this.gravity){
+        		for(var i = 0; i < myWalls.length;i++){
+        			if(collide(this, myWalls[i]) && this.gravitySpeed > 0){
+            			//standing
+						this.gravitySpeed = 0;
+						this.y = myWalls[i].y - (myWalls[i].height / 2) - this.height/2;
+        			}
+        		}
+        	}
+
+        	if(this.gravitySpeed > 0){
+        		this.landing = true
+        		//accelerating down
+        		this.y += this.gravitySpeed;
+        		this.action = this.landLoop[Math.floor(this.landI)];
+            	this.landI += 1/this.landScl;
+            	if(Math.floor(this.landI) >= this.landLoop.length)this.landI = 0;
+			}else if(this.gravitySpeed === 0 && this.landing === true){
+				//landing
+            	this.action = this.landLoop[Math.floor(this.landI)];
+            	this.landI += 1/this.landScl;
+            	if(Math.floor(this.landI) >= this.landLoop.length){
+                	this.landI = 0;
+                	this.landing = false;
+                	this.action = 2;
+            	}
+           	}else if(this.gravitySpeed < 0){
+        		//accelerating up
+        		this.landI = 0;
+        		this.y += this.gravitySpeed;
+        		if(Math.floor(this.riseI) >= this.riseLoop.length){
+            		this.action = this.riseLoop[this.riseLoop.length-1];
+            	}else{
+        			this.action = this.riseLoop[Math.floor(this.riseI)];
+            	}
+            	this.riseI += 1/this.riseScl;
+            }else{
+				//this.walkI = 0;
+				this.landI = 0;
+				this.riseI = 0;
+            }
+        }
+    }
+}
+var devRot = 0;
+function deviceOrientationHandler(lr,fb,dir){
+	devRot = Math.round(map_range(lr, -50, 50, -10, 10));
+}
+function clickedCanvas(){
+	if(!player.gravitySpeed) player.gravitySpeed= -10;
+}
+var frames = 0;
+var score = 0;
+function updateGameArea() {
+	frames++;
+	if(!(frames%100)){
+		myCoins.push(new Component(40, 40, "yellow", Math.random()*myGameArea.width ,0,"coin"));
+		if(myCoins.length > 200){
+			myCoins.shift();
+		}
+	}
+	//alert(devRot);
+    myGameArea.clear();
+    if(!player.gravitySpeed){
+    	player.speed["x"] = 0;
+    	player.speed["y"] = 0;
+    	if (myGameArea.keys && myGameArea.keys[37]) {player.speed["x"] = -4;player.direction = true;}
+    	if (myGameArea.keys && myGameArea.keys[39]) {player.speed["x"] = 4 ;player.direction = false;}
+    	if (window.DeviceOrientationEvent) {
+    		player.speed["x"] = devRot;
+    		if(devRot < 0)player.direction = true;
+    		if(devRot > 0)player.direction = false;
+        }
+/*     	if (myGameArea.keys && myGameArea.keys[38]) {player.speed["y"]	= -4	;}
+   		if (myGameArea.keys && myGameArea.keys[40]) {player.speed["y"] = 4;} */
+	}else if(player.speed["x"] > 0){
+		player.speed["x"]-=0.02;
+	}else if(player.speed["x"] < 0){
+		player.speed["x"]+=0.02;
+	}else{
+		player.action = 2;
+	}
+    if (myGameArea.keys && myGameArea.keys[32]) {if(!player.gravitySpeed) player.gravitySpeed= -10;}
+    for (i = 0; i < myWalls.length; i++){
+    	myWalls[i].update();
+    }
+    for (i = 0; i < myCoins.length; i++){
+        if(collide(player,myCoins[i])){
+		score++;
+		var tmp = myCoins[0];
+		myCoins[0] = myCoins[i];
+		myCoins[i] = tmp;
+		myCoins.shift();
+        }
+        myCoins[i].newPosCoin();
+    	myCoins[i].update();
+    }
+    player.newPosPlayer();
+    player.update();
+
+    myGameArea.context.fillStyle = "white";
+    myGameArea.context.font = "30px Arial";
+    myGameArea.context.fillText(score,10,50);
+
+
+    /* for(var i = 0; i< myGameArea.keys.length;i++){
+        if(myGameArea.keys[i]){
+    		console.log(i + myGameArea.keys[i]);
+        }
+    } */
+}
+var myCoins = [];
+var myWalls = [];
+myWalls[0] = new Component(myGameArea.width, myGameArea.height / 4.878, "", myGameArea.width / 2, myGameArea.height - (myGameArea.height / 4.878)/2,"wall");
+function handleCollisions(){
+	for (i = 0; i < myWalls.length; i++) {
+		if(collide(player,myWalls[i])){
+
+		}
+	}
+}
+function collide(obj1, obj2) {
+	if(obj2.type === "player"){var tmp = obj1; obj1 = obj2; obj2 = tmp;}
+	if(obj1.type === "player"){
+		var myleft = obj1.x - (obj1.Cwidth / 2);
+    	var myright = obj1.x + (obj1.Cwidth / 2);
+	}else{
+    	var myleft = obj1.x - (obj1.width / 2);
+    	var myright = obj1.x + (obj1.width / 2);
+	}
+    var mytop = obj1.y - (obj1.height / 2);
+    var mybottom = obj1.y + (obj1.height / 2);
+    var otherleft = obj2.x - (obj2.width / 2);
+    var otherright = obj2.x + (obj2.width) / 2;
+    var othertop = obj2.y - (obj2.height / 2);
+    var otherbottom = obj2.y + (obj2.height) / 2;
+    var collide = true;
+
+    if ((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)) {
+    	collide = false;
+    }
+    return collide;
+}
+function map_range(value, low1, high1, low2, high2) {
+    return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
+}
+</script>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,225 @@
+html, body{
+    background: #929AA9;
+    background: linear-gradient(to left, #ff9966, #ff5e62);
+    font-family: "Avenir Next", Arial, sans-serif;
+    text-align: center;
+}
+h1, h2{
+    color: white;
+}
+h1{
+    font-size: 40px;
+    margin-bottom: 0;
+    margin-top: 40px;
+}
+h2{
+    font-size: 25px;
+    margin-top:0;
+}
+.container{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    box-sizing: border-box;
+    position: relative;
+    border-radius: 5px;
+    width: 400px;
+    height: 225px;
+    display: inline-block;
+    margin: 30px;
+    background: white;
+}
+.clipper{
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    border-radius: 5px;
+}
+.container::before{
+    content:"";
+    display:block;
+    position:absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255,255,255, 0.85);
+    transition: .5s;
+    z-index: 10;
+    border-radius: 5px;
+}
+.container:hover::before{
+    background-color: rgba(255,255,255,.0);
+}
+.container .logo{
+    display:block;
+    position:absolute;
+    width: 150px;
+    height:150px;
+    margin: 37px 125px;
+    transition: .6s;
+    z-index:15;
+    filter: drop-shadow( 0 0 5px rgba(0, 0, 0, 0.2));
+}
+.container:hover .logo{
+    opacity: 0;
+}
+
+.container .thumbnail{
+    display: block;
+    position:absolute;
+    width:100%;
+    min-height: 100%;
+    z-index:0;
+}
+.container h2,.container h3,.container p, .container > span{
+    position:absolute;
+    z-index:15;
+    text-align:center;
+    width:100%;
+    transition: opacity .5s, top .4s, bottom .4s;
+    color: #3E494B;
+}
+.container h2{
+    top: 10px;
+    font-weight: 200;
+}
+.container:hover h2{
+    top:-60px;
+}
+.container h3{
+    bottom: 10px;
+    font-weight:200;
+}
+.container:hover h3{
+    bottom:-50px;
+}
+.container > span{
+    bottom:0;
+    right: 0;
+    padding: 6px 10px;
+    text-align: right;
+    box-sizing: border-box;
+}
+.container:hover > span{
+    transition: .2s;
+    bottom: -30px;
+}
+span span{
+    margin-left: 3px;
+    padding: 2px 10px;
+    border-radius: 7.5px;
+    font-size: 9px;
+    color: white;
+    background: #a4a4a4;
+    font-weight: 400;
+    cursor: pointer;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.09);
+}
+span span:active{
+    cursor: grabbing;
+}
+span.html{
+    background: #ff5530;
+}
+span.css{
+    background: #3B95CD;
+}
+span.js{
+    background: #DC9D37;
+}
+span.node-js{
+    background: #39c847;
+}
+span.php{
+    background: #777CB1;
+}
+span.sql{
+    background: #17d1a9;
+}
+span.socket-io{
+    background: #3D3D3D;
+}
+span.google_cloud, span.google_analytics{
+    background: #00b05d;
+}
+span.aws{
+    background: #42748d;
+}
+span.weebly{
+     background: #3073a1;
+}
+span.pwa{
+    background: #1A98FC;
+}
+span.scss{
+    background: #CD669A;
+}
+span:target{
+    background: #1A98FC;
+}
+
+.container p{
+    color:white;
+    bottom: 30px;
+    font-weight:200;
+    opacity: 0;
+    margin:0;
+    padding: 0 10px;
+    box-sizing: border-box;
+}
+.container:hover p{
+    opacity: 1;
+    background: rgba(50, 50, 50, 0.8);
+}
+.ch-container{
+    padding-top:20px;
+    margin-bottom: 0;
+    text-align: center;
+    transform: scale(.8);
+}
+.creative-header{
+    width: 50px;
+    height: 50px;
+    text-align:right;
+    padding:25px;
+    overflow:hidden;
+    display:inline-block;
+    margin: 10px 30px;
+}
+.creative-header div{
+    width: 242%;
+    height: 242%;
+    margin-top:-71%;
+    margin-left:-71%;
+    background-image: url("img/Sam.jpg");
+    background-size:cover;
+}
+
+@media only screen and (max-width: 414px) {
+    html, body{
+        margin: 0;
+        padding: 0;
+    }
+    .container{
+        width: calc(100vw - 20px);
+        margin: 5px;
+    }
+    .container:hover > span{
+        bottom: -15px;
+    }
+}
+@media (prefers-color-scheme: dark) {
+    html, body {
+        background: black;
+    }
+    h1, h2 , .container h2, .container h3, .container p{
+        color: whitesmoke;
+    }
+    .container:before{
+        background: rgba(27, 28, 30, 0.8);
+    }
+    .container {
+        background: rgba(27, 28, 30,1);
+    }
+    img{
+        opacity: .75;
+    }
+}

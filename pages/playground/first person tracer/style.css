@@ -1,0 +1,23 @@
+@font-face {
+    font-family: anonpro;
+    src: url('anonymouspro/AnonymousPro-Regular.ttf');
+}
+
+body,html{
+    margin:0;
+    padding:0;
+    width:100vw;
+    height:100vh;
+    background-color: #ebdecc;
+    font-family: anonpro;
+    overflow: hidden;
+}
+canvas#fpv{
+    background:linear-gradient(to bottom, #636cff,black, black, #793a13);
+    width:  100vw;
+    height: 100vh;
+
+}
+canvas#debug{
+    background-color: white;
+}

@@ -1,0 +1,15 @@
+{
+  "name": "superquest",
+  "version": "0.1.0",
+  "description": "The city is our playground.",
+  "main": "index.js",
+  "author": "Sam Apostel",
+  "private": true,
+  "dependencies": {
+    "express": "^4.16.4",
+    "socket.io": "^2.2.0"
+  },
+  "scripts": {
+    "start": "node index.js"
+  }
+}

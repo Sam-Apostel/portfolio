@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+<head>
+    <title>Chat Me Up</title>
+    <meta name="viewport" content="width=device-width; initial-scale=1.2; maximum-scale=1.2; user-scalable=0;" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Super Quest"/>
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link href="splashscreens/1242x2148.png" media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" rel="apple-touch-startup-image">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body onload="window.location='#login';"> <!-- change to login -->
+    <section id="login">
+        <button class="loginBtn loginBtn--facebook" onclick="window.location='#main';">Login with Facebook</button>
+        <button class="loginBtn loginBtn--google" onclick="window.location='#main';">Login with Google</button>
+        <button class="loginBtn loginBtn--apple" onclick="window.location='#main';">Login with Apple</button>
+        <hr>
+        <label for="email">Your email</label>
+        <input id="email" type="email">
+        <label for="password">Your password</label>
+        <input id="password" type="password">
+
+        <button class="loginBtn loginBtn--login" onclick="window.location='#main';">Login</button>
+        <button class="loginBtn loginBtn--register" onclick="window.location='#main';">Register</button>
+        <a>Can't login?</a>
+    </section>
+    <section id="main">
+        <div class="qotd" label="Quest of the day:" onclick="window.location='#wizard';">
+            <h2>City view</h2>
+            <p>Explore some new or unknown part of the city you live in. Take someone on an adventure and try to meet someone new.</p>
+        </div>
+        <div class="quests" label="More Quests:">
+            <div class="map">
+                <img src="img/map.png">
+            </div>
+        </div>
+        <div class="challenges" label="Up next: Go for a run! 🏃‍♂️">
+            <div class="bar">
+                <div class="range">20%</div>
+            </div>
+        </div>
+    </section>
+    <section id="wizard">
+        <h1>A wild wizard has appeared</h1>
+        <div class="dialogue">
+            <div class="block current" onclick="this.classList.add('clicked')">
+                <p class="question">Hello stranger ! We are in need of help, can you lend us a hand?</p>
+                <p class="answer">What’s the problem?</p>
+                <p class="answer pick">My god you have an awful big nose!</p>
+                <p class="answer">Get lost midget!</p>
+            </div>
+            <div class="block" onclick="window.location='#main'">
+                <p class="question">Ow… This old thing? It grows every time someone says something mean to me … Anyway, want to help out?</p>
+                <p class="answer">Absolutely, shoot!</p>
+                <p class="answer ">Sure! Who ‘nose’ there might be something in it for me?</p>
+                <p class="answer pick">Hell no, I’m not helping out freaks like you.</p>
+            </div>
+            <div class="block" onclick="this.parent.classList.add('clicked')">
+                <p class="question">Woops, there it goes again! Now why did you had to do that? Well, I can’t offer you any Superquestcoin, but you might get some renown points out of it …
+                    There’s a woman that lives 140m away from here that is in need of assistance. She’s not well and her dog hasn’t been let out for two days! Do you like dogs?</p>
+                <p class="answer">Hell yes! Show me where I need to be!</p>
+                <p class="answer pick ">Dogs are inferior creatures, but sure, I’ll help out the old hag.</p>
+                <p class="answer ">I’m not letting out a stinking dog!</p>
+            </div>
+        </div>
+        <img src="img/wizard.png">
+    </section>
+
+
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/script.js?v=0"></script>
+</body>
+</html>

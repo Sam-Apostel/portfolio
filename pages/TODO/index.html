@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TODO</title>
+    <link href="style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <section>
+        <h1>Today</h1>
+        <div class="task" id="today">
+            <input type="checkbox" id="T0" onchange="counter(this.parentNode);">
+            <label for="T0" class="group">
+                <h5>Cooking class</h5>
+                <p>4 of 4 tasks remaining</p>
+            </label>
+            <input type="checkbox" id="T1" onchange="counter(this.parentNode);">
+            <label for="T1" class="group">
+                <h5>Learn Japanese</h5>
+                <p>3 of 4 tasks remaining</p>
+            </label>
+            <input type="checkbox" id="T2" onchange="counter(this.parentNode);">
+            <label for="T2" class="group">
+                <h5>Make Flutter app</h5>
+                <p>2 of 4 tasks remaining</p>
+            </label>
+            <input type="checkbox" id="T3" onchange="counter(this.parentNode);">
+            <label for="T3" class="group">
+                <h5>Take out trash</h5>
+                <p>1 of 4 tasks remaining</p>
+            </label>
+            <div class="group">
+                <h5>DONE!</h5>
+                <p>no more tasks remaining</p>
+            </div>
+        </div>
+        <input type="checkbox" id="Tadd">
+        <label class="task add group" for="Tadd">
+            <h5>+</h5>
+            <p>add</p>
+        </label>
+    </section>
+
+    <h1>Groups</h1>
+    <h1>Long term</h1>
+    <h1>Dashboard</h1>
+    <h1>Tasks</h1>
+
+
+
+    <script>
+        let sections = {today:[],groups:[],long_term:[]};
+        function counter(section) {
+            let progress = count(section);
+            let width = Math.ceil(210*(progress.completed/progress.total));
+            let current = parseInt(getComputedStyle(document.documentElement).getPropertyValue("--T-completion"));
+            console.log(current);
+
+            let timerId = setInterval(function() {
+                document.children[0].style.setProperty("--T-completion",current);
+                if (current === width) {
+                    clearInterval(timerId);
+                }
+                current++;
+            }, 1);
+            //document.children[0].style.setProperty("--T-completion",width+"px");
+        }
+        function count(section){
+            let total = [...section.getElementsByTagName("input")].length;
+            let completed = [...section.getElementsByTagName("input")].filter(cb => cb.checked).length;
+            return {completed: completed, total: total};
+        }
+    </script>
+</body>
+</html>
