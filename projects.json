@@ -14,14 +14,6 @@
     "assignment":"A project I took on to get proficient in websockets.",
     "technologies": ["html", "js", "css", "Socket.io", "sql", "PWA"]
   },
-  "AVDB": {
-    "img": "AVDB",
-    "title":"A Van Den Bosch Dakwerken",
-    "subtitle": "Complete website redesign",
-    "assignment": "",
-    "link": "http://www.avandenbosch.be",
-    "technologies": ["html", "js", "css", "Google Analytics"]
-  },
   "Playground": {
     "img":"playground",
     "title":"Playground",
@@ -77,6 +69,12 @@
     "img": "vaya",
     "title": "Vaya Massage",
     "link": "app.vayamassage.be",
-    "technologies": ["React native", "Cloud functions", "mySql"];
+    "technologies": ["React native", "Cloud functions", "mySql"]
+  },
+  "homeOfHope": {
+    "img": "hope",
+    "title": "Home of Hope",
+    "link": "hope.tigrr.be",
+    "technologies": ["html", "css", "typescript", "webcomponents", "mollie", "php"]
   }
 }
