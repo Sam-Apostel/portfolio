@@ -1,8 +1,14 @@
 html, body{
-    background: #929AA9;
-    background: linear-gradient(to left, #ff9966, #ff5e62);
     font-family: "Avenir Next", Arial, sans-serif;
     text-align: center;
+    transition: .2s;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+html {
+    background: linear-gradient(to left, #ff9966, #ff5e62);
+    min-height: 100vh;
 }
 h1, h2{
     color: white;
@@ -21,11 +27,11 @@ h2{
     box-sizing: border-box;
     position: relative;
     border-radius: 5px;
-    width: 400px;
-    height: 225px;
-    display: inline-block;
-    margin: 30px;
+    width: min(500px, calc(100% - (30px * 2)));
+    aspect-ratio: 5 / 3;
     background: white;
+    display: inline-grid;
+    margin: 30px;
 }
 .clipper{
     overflow: hidden;
@@ -33,6 +39,7 @@ h2{
     height: 100%;
     position: absolute;
     border-radius: 5px;
+    display: grid;
 }
 .container::before{
     content:"";
@@ -44,20 +51,27 @@ h2{
     transition: .5s;
     z-index: 10;
     border-radius: 5px;
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
 }
 .container:hover::before{
     background-color: rgba(255,255,255,.0);
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
 }
-.container .logo{
+.logo{
     display:block;
-    position:absolute;
-    width: 150px;
-    height:150px;
-    margin: 37px 125px;
+    width: 36%;
     transition: .6s;
     z-index:15;
-    filter: drop-shadow( 0 0 5px rgba(0, 0, 0, 0.2));
+    filter: drop-shadow( 0 0 6px rgba(0, 0, 0, 0.2));
+    place-self: center;
 }
+
+.logo.dark {
+    display: none;
+}
+
 .container:hover .logo{
     opacity: 0;
 }
@@ -69,7 +83,7 @@ h2{
     min-height: 100%;
     z-index:0;
 }
-.container h2,.container h3,.container p, .container > span{
+.container h2,.container h3,.container p, .technologies{
     position:absolute;
     z-index:15;
     text-align:center;
@@ -91,70 +105,49 @@ h2{
 .container:hover h3{
     bottom:-50px;
 }
-.container > span{
+.technologies{
     bottom:0;
     right: 0;
     padding: 6px 10px;
-    text-align: right;
     box-sizing: border-box;
-}
-.container:hover > span{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
     transition: .2s;
-    bottom: -30px;
+    /*top: 0%;*/
 }
-span span{
-    margin-left: 3px;
+.container:hover > .technologies{
+    bottom: -31px;
+}
+.technologies span{
     padding: 2px 10px;
-    border-radius: 7.5px;
-    font-size: 9px;
+    border-radius: 9px;
+    font-size: 11px;
     color: white;
     background: #a4a4a4;
     font-weight: 400;
     cursor: pointer;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.09);
+    white-space: nowrap;
 }
-span span:active{
-    cursor: grabbing;
-}
-span.html{
-    background: #ff5530;
-}
-span.css{
-    background: #3B95CD;
-}
-span.js{
-    background: #DC9D37;
-}
-span.node-js{
-    background: #39c847;
-}
-span.php{
-    background: #777CB1;
-}
-span.sql{
-    background: #17d1a9;
-}
-span.socket-io{
-    background: #3D3D3D;
-}
-span.google_cloud, span.google_analytics{
-    background: #00b05d;
-}
-span.aws{
-    background: #42748d;
-}
-span.weebly{
-     background: #3073a1;
-}
-span.pwa{
-    background: #1A98FC;
-}
-span.scss{
-    background: #CD669A;
-}
-span:target{
-    background: #1A98FC;
-}
+.technologies > .html { background: #ff5530 }
+.technologies > .css { background: #3B95CD }
+.technologies > .js { background: #DC9D37 }
+.technologies > .node-js { background: #39c847 }
+.technologies > .php { background: #777CB1 }
+.technologies > .sql { background: #16aa89 }
+.technologies > .socket-io { background: #171717 }
+.technologies > .google_cloud, .technologies > .google_analytics, .technologies > .google_firebase { background: #00b05d }
+.technologies > .aws { background: #42748d }
+.technologies > .weebly { background: #3073a1 }
+.technologies > .pwa { background: #1A98FC }
+.technologies > .scss { background: #c86295 }
+.technologies > .react { background: #4eabc3 }
+.technologies > .next-js, .technologies > .cloud_functions { background: #000 }
+.technologies > .graphql { background: #ec0396 }
+.technologies > .strapi { background: #8a72f5 }
+.technologies > .facebook_graph_api { background: #1a6edf }
+.technologies > .typescript { background: #3275bf }
 
 .container p{
     color:white;
@@ -194,21 +187,16 @@ span:target{
 }
 
 @media only screen and (max-width: 414px) {
-    html, body{
-        margin: 0;
-        padding: 0;
-    }
     .container{
-        width: calc(100vw - 20px);
-        margin: 5px;
-    }
-    .container:hover > span{
-        bottom: -15px;
+        margin: 20px;
     }
 }
 @media (prefers-color-scheme: dark) {
-    html, body {
-        background: black;
+    html {
+        background:
+            linear-gradient(to bottom left, #0a2835, transparent),
+            linear-gradient(to top left, #222a2f, transparent),
+            linear-gradient(to top right, #0a2835, #08181d);
     }
     h1, h2 , .container h2, .container h3, .container p{
         color: whitesmoke;
@@ -219,7 +207,17 @@ span:target{
     .container {
         background: rgba(27, 28, 30,1);
     }
-    img{
+    .container:hover {
+        box-shadow: -4px 8px 50px 0 rgba(184, 84, 178, 0.24), 3px -9px 50px 0 rgba(21, 117, 187, 0.19);
+    }
+    .logo {
         opacity: .75;
+    }
+    .logo.dark {
+        display: block;
+    }
+
+    .logo.dark + .logo {
+        display: none;
     }
 }
