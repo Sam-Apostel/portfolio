@@ -1,6 +1,17 @@
 {
+	"3D-browser": {
+		"img": "3D-browser",
+		"title": "3D design browser",
+		"hasDarkModeAlt": true,
+		"link": "https://sams.land",
+		"technologies": [
+			"THREE.js",
+			"next.js"
+		]
+	},
 	"polar-slicer": {
 		"img": "polar-slicer",
+		"title": "polar slicer",
 		"link": "https://polar-slicer.sams.land",
 		"technologies": [
 			"react",
@@ -39,10 +50,7 @@
 		"technologies": [
 			"html",
 			"css",
-			"typescript",
-			"webcomponents",
-			"mollie",
-			"Cloud functions"
+			"html5-boilerplate"
 		]
 	},
 	"homeOfHope": {
