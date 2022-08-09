@@ -12,7 +12,7 @@
 	"polar-slicer": {
 		"img": "polar-slicer",
 		"title": "polar slicer",
-		"link": "https://polar-slicer.sams.land",
+		"link": "https://slicer.sams.land",
 		"technologies": [
 			"react",
 			"THREE.js",
@@ -58,12 +58,11 @@
 		"title": "Home of Hope",
 		"link": "https://hope.tigrr.be/shop",
 		"technologies": [
-			"html",
-			"css",
+			"scss",
 			"typescript",
-			"webcomponents",
+			"next.js",
 			"mollie",
-			"Cloud functions"
+			"Google firebase"
 		]
 	},
 	"AVDB": {
