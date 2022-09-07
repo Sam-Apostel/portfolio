@@ -3,7 +3,7 @@
 		"img": "3D-browser",
 		"title": "3D design browser",
 		"hasDarkModeAlt": true,
-		"link": "https://sams.land",
+		"link": "https://3D.sams.land",
 		"technologies": [
 			"THREE.js",
 			"next.js"
